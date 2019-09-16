@@ -7,7 +7,10 @@ const secret = 'TOPSECRETTOP'
 
 router.post('/login', function (req, res) {
     const { idn, password, role } = req.body
-    entities[role].findOne({ where: { idn }}).then(user => {
+    entities[role].findOne({
+        where: { idn },
+        attributes: { exclude: ['id'] }
+    }).then(user => {
         if (!user) return res.json({ error: "DNI y/o password incorrecto"})
         if (password !== user.hashed_password) return res.json({ error: "DNI y/o password incorrecto"})
         
