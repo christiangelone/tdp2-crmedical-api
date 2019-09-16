@@ -11,8 +11,8 @@ router.post('/login', function (req, res) {
         where: { idn },
         attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
     }).then(user => {
-        if (!user) return res.json({ error: "DNI y/o password incorrecto"})
-        if (password !== user.hashed_password) return res.json({ error: "DNI y/o password incorrecto"})
+        if (!user) return res.status(400).json({ error: "DNI y/o password incorrecto"})
+        if (password !== user.hashed_password) return res.status(400).json({ error: "DNI y/o password incorrecto"})
         
         user.hashed_password = undefined
         const token = jwt.sign({ idn, role }, secret, )
