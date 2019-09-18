@@ -26,7 +26,10 @@ router.post('/register', function (req, res) {
     const { info, role } = req.body
     info.hashed_password = info.password
     entities[role].create(info)
-        .then(user => mailers.sendWelcomeEmail({ email: user.email, user }))
+        .then(user => {
+            console.log(JSON.stringify(user, null, 2))
+            mailers.sendWelcomeEmail({ user })
+        })
         .then(_ => res.status(200).end())
         .catch(err => res.send({ error: `Hubo un error al registrar el usuario > ${ err }`}))
 })

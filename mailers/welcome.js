@@ -1,9 +1,9 @@
 
 module.exports = transport => {
-    return ({ user, email }) => {
+    return ({ user }) => {
         transport.sendMail({
-            from: 'MyHealthApp <myhealthapp@outlook.com>',
-            to: email,
+            from: 'myhealthapp@outlook.com',
+            to: user.email,
             subject: 'Bienvenido a MyHealthApp 🎉',
             html: `
             <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
