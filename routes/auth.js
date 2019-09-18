@@ -25,13 +25,31 @@ router.post('/login', function (req, res) {
 router.post('/register', function (req, res) {
     const { info, role } = req.body
     info.hashed_password = info.password
-    entities[role].create(info)
+
+    entities[role]
+        .findOne({ where: { idn: info.idn } })
         .then(user => {
-            console.log(JSON.stringify(user, null, 2))
-            mailers.sendWelcomeEmail({ user })
+            if(user) throw new Error('Usted ya se encuentra registrado')
+            if(role === 'affiliate') {
+                return entities.authorized_affiliate
+                    .findOne({ where: { idn: info.idn } })
+                    .then(affiliate => {
+                        if(!affiliate) throw new Error('Usted no es un afiliado autorizado')
+                        if(info.plan !== affiliate.plan) throw new Error(`Usted no esta afiliado con el plan '${ info.plan }'`)
+                        if(info.affiliate_id !== affiliate.affiliate_id) throw new Error(`Usted no esta afiliado con este numero de afiliado '${ info.affiliate_id }'`)
+                        entities[role]
+                            .create(info)
+                            .then(user => { mailers.sendWelcomeEmail({ user }) })
+                            .then(_ => res.status(200).json({ message: 'Registro exitoso' }))
+                    })
+            } else {
+                return entities[role]
+                            .create(info)
+                            .then(_ => res.status(200).json({ message: 'Registro exitoso' }))
+            }
+            
         })
-        .then(_ => res.status(200).end())
-        .catch(err => res.send({ error: `Hubo un error al registrar el usuario > ${ err }`}))
+        .catch(err => res.send({ error: `Hubo un error al registrarte > ${ err.message }`}))
 })
 
 module.exports = router

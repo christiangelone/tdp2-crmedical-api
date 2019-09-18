@@ -17,6 +17,10 @@ const Affiliate = db.define('affiliate', {
     type: dataTypes.STRING,
     allowNull: false
   },
+  plan: {
+    type: dataTypes.STRING,
+    allowNull: false
+  },
   idn: {
     type: dataTypes.INTEGER,
     allowNull: false,
