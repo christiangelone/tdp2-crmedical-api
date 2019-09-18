@@ -49,7 +49,7 @@ router.post('/register', function (req, res) {
             }
             
         })
-        .catch(err => res.send({ error: `Hubo un error al registrarte > ${ err.message }`}))
+        .catch(err => res.status(400).json({ error: `Hubo un error al registrarte > ${ err.message }`}))
 })
 
 module.exports = router
