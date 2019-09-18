@@ -19,7 +19,8 @@ const Affiliate = db.define('affiliate', {
   },
   idn: {
     type: dataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   email: {
     type: dataTypes.STRING,
