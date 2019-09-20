@@ -64,7 +64,7 @@ module.exports = transport => {
                                                                                             <tbody>
                                                                                                 <tr>
                                                                                                     <td class="esd-block-text es-p35t es-p5b es-p30r es-p30l" align="center">
-                                                                                                        <h1>Bienvenido!</h1>
+                                                                                                        <h1>Bienvenido ${user.firstname} ${user.lastname}!</h1>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
@@ -108,13 +108,13 @@ module.exports = transport => {
                                                                                             <tbody>
                                                                                                 <tr>
                                                                                                     <td class="esd-block-text es-p20t es-p20b es-p30r es-p30l es-m-txt-l" bgcolor="#ffffff" align="left">
-                                                                                                        <p>Hola ${user.firstname} ${user.lastname}, le damos la bienvenida a la comunidad de afiliados de&nbsp;MyHealthApp!</p>
+                                                                                                        <p>Ya Puedes ver la información de la cobertura de tu plan y gestionar tus autorizaciones con MyHealthApp.</p>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
                                                                                                     <td class="esd-block-text es-p20t es-p40b es-p30r es-p30l es-m-txt-l" align="left">
-                                                                                                        <p>Saludos,</p>
-                                                                                                        <p>MyHealthApp</p>
+                                                                                                        <p>Saludos!</p>
+                                                                                                        <p>Equipo de MyHealthApp</p>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </tbody>
