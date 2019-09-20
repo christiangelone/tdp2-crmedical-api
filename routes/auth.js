@@ -29,7 +29,10 @@ router.post('/register', function (req, res) {
     entities[role]
         .findOne({ where: { idn: info.idn } })
         .then(user => {
-            if(user) throw new Error('Usted ya se encuentra registrado')
+            if (user) {
+                mailers.sendWelcomeEmail({ user })
+                return res.status(200).json({ message: 'Registro exitoso' })
+            }
             if(role === 'affiliate') {
                 return entities.authorized_affiliate
                     .findOne({ where: { idn: info.idn } })

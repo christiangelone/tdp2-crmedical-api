@@ -1,14 +1,9 @@
 'use strict';
 const nodemailer = require('nodemailer');
 const transport = nodemailer.createTransport({
-    host: 'smtp-mail.outlook.com',
-    port: 587,
-    secure: false,
-    tls: {
-        ciphers:'SSLv3'
-    },
+    service: 'gmail',
     auth: {
-        user: 'myhealthapp@outlook.com',
+        user: 'myhealthapp2019@gmail.com',
         pass: 'health1234'
     }
 });
