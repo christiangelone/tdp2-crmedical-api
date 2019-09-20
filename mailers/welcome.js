@@ -108,7 +108,7 @@ module.exports = transport => {
                                                                                             <tbody>
                                                                                                 <tr>
                                                                                                     <td class="esd-block-text es-p20t es-p20b es-p30r es-p30l es-m-txt-l" bgcolor="#ffffff" align="left">
-                                                                                                        <p>Ya Puedes ver la información de la cobertura de tu plan y gestionar tus autorizaciones con MyHealthApp.</p>
+                                                                                                        <p>Ya puedes ver la información de la cobertura de tu plan y gestionar tus autorizaciones con MyHealthApp.</p>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
