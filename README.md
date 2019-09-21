@@ -22,4 +22,11 @@ postgres# CREATE DATABASE myhealthapp;
 
 Note: After creating the database restart the local environment
 
+## Deploy to heroku
+```
+~$ heroku login
+```
+```
+~$ git push heroku master
+```
 
