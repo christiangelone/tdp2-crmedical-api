@@ -1,7 +1,7 @@
 # CRMedical API
 
 ## Prerequirements
- * Docker >= 19.03.2
+ * Docker CE
  * Docker compose 
 
 ## Start the local environment
