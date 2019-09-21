@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const config = require('../config')
 
 const entities = require('../data/entities')
 const jwt = require('jsonwebtoken')
@@ -30,7 +31,7 @@ router.post('/register', function (req, res) {
         .findOne({ where: { idn: info.idn } })
         .then(user => {
             if (user) {
-                mailers.sendWelcomeEmail({ user })
+                mailers.sendWelcomeEmail({ user }, config.isTesting)
                 return res.status(200).json({ message: 'Registro exitoso' })
             }
             if(role === 'affiliate') {
@@ -42,7 +43,7 @@ router.post('/register', function (req, res) {
                         if(info.affiliate_id !== affiliate.affiliate_id) throw new Error(`Usted no esta afiliado con este numero de afiliado '${ info.affiliate_id }'`)
                         entities[role]
                             .create(info)
-                            .then(user => { mailers.sendWelcomeEmail({ user }) })
+                            .then(user => { mailers.sendWelcomeEmail({ user }, config.isTesting) })
                             .then(_ => res.status(200).json({ message: 'Registro exitoso' }))
                     })
             } else {
