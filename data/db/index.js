@@ -11,7 +11,7 @@ module.exports.init = () => {
   sequelize
     .authenticate()
     .then(() => console.log('Connection has been established successfully.'))
-    .then(() => sequelize.sync({ force: config.isTesting }))
+    .then(() => sequelize.sync({ force: false })) // TODO: Found the way to use {force: true} for tests & change the false for `config.isTesting`
     .then(() => console.log('Tables created!'))
     .catch(err => console.error('Unable to connect to the database:', err));
 }
