@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const config = require('../config')
 
 const entities = require('../data/entities')
 const jwt = require('jsonwebtoken')
@@ -30,7 +31,7 @@ router.post('/register', function (req, res) {
         .findOne({ where: { idn: info.idn } })
         .then(user => {
             if (user) {
-                mailers.sendWelcomeEmail({ user })
+                mailers.sendWelcomeEmail({ user }, config.isTesting)
                 return res.status(200).json({ message: 'Registro exitoso' })
             }
             if(role === 'affiliate') {
@@ -43,7 +44,7 @@ router.post('/register', function (req, res) {
                         if(affiliate.expires < new Date()) throw new Error(`Usted tiene su afiliacion vencida`)
                         entities[role]
                             .create(info)
-                            .then(user => { mailers.sendWelcomeEmail({ user }) })
+                            .then(user => { mailers.sendWelcomeEmail({ user }, config.isTesting) })
                             .then(_ => res.status(200).json({ message: 'Registro exitoso' }))
                     })
             } else {

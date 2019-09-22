@@ -14,3 +14,6 @@ require('./routes')(api)
 
 port = configEnv["PORT"] || 3333
 api.listen(port, () => console.log(`ATM api listening at port ${ port }...`));
+
+module.exports.api = api
+module.exports.dbData = dbData
