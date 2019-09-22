@@ -25,6 +25,10 @@ const AuthorizedAffiliate = db.define('authorized_affiliate', {
         type: dataTypes.INTEGER,
         allowNull: false,
         unique: true
+    },
+    expires: {
+        type: dataTypes.DATE,
+        allowNull: false,
     }
 }, { db });
 

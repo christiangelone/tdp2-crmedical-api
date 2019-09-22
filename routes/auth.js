@@ -40,6 +40,7 @@ router.post('/register', function (req, res) {
                         if(!affiliate) throw new Error('Usted no es un afiliado autorizado')
                         if(info.plan !== affiliate.plan) throw new Error(`Usted no esta afiliado con el plan '${ info.plan }'`)
                         if(info.affiliate_id !== affiliate.affiliate_id) throw new Error(`Usted no esta afiliado con este numero de afiliado '${ info.affiliate_id }'`)
+                        if(affiliate.expires < new Date()) throw new Error(`Usted tiene su afiliacion vencida`)
                         entities[role]
                             .create(info)
                             .then(user => { mailers.sendWelcomeEmail({ user }) })
