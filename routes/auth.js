@@ -8,7 +8,7 @@ const secret = 'TOPSECRETTOP'
 
 const mailers = require('../mailers')
 
-router.post('/login', function (req, res) {
+router.post('/login', (req, res) => {
     const { idn, password, role } = req.body
     entities[role].findOne({
         where: { idn },
@@ -23,7 +23,7 @@ router.post('/login', function (req, res) {
     })
 })
 
-router.post('/register', function (req, res) {
+router.post('/register', (req, res) => {
     const { info, role } = req.body
     info.hashed_password = info.password
 

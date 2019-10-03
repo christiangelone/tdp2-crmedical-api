@@ -1,6 +1,6 @@
 const { db, dataTypes } = require('../db')
 
-const Affiliate = db.define('affiliate', {
+const Affiliate = db.define('affiliates', {
   firstname: {
     type: dataTypes.STRING,
     allowNull: false
@@ -34,6 +34,14 @@ const Affiliate = db.define('affiliate', {
     type: dataTypes.STRING,
     allowNull: false
   }
-}, { db });
+}, {
+  underscored: true,
+  freezeTableName: true,
+  classMethods: {
+    associate: (entities) => {
+      console.log("ASSOCIATIONS FOR AFFILIATE LOADED!")
+    }
+  }
+});
 
 module.exports = Affiliate
