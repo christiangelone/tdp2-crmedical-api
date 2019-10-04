@@ -13,7 +13,13 @@ const getFilters = (query, filters) => {
 
 router.post('/', (req, res) => {
     const { type, name, languages, emails, plan, specialties, offices} = req.body
-    return entities.lenders.create({ type, name, languages, emails, plan })
+    return entities.lenders.create({
+        type,
+        name,
+        languages: languages.join(','),
+        emails: emails.join(','),
+        plan
+    })
         .then(lender => Promise.resolve(lender.id))
         .then(lender_id => console.log(lender_id) || Promise.all([
             Promise.resolve(lender_id),
@@ -68,7 +74,9 @@ router.get('/', (req, res) => {
         ],
         order: [['name', 'ASC']]
     })
-    .then(lenders => res.json(lenders))
+    .then(lenders => res.json(lenders.map(l =>
+        Object.assign(l, { emails: l.emails.split(','), languages: l.languages.split(',')})
+    )))
     .catch(err => res.status(500).json({ error: `Hubo un error al obtener los prestadores > ${err.message}`}))
 })
 
