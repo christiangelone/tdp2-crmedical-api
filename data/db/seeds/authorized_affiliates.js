@@ -1,7 +1,9 @@
 const entities = require('../../entities')
-module.exports = entities.authorized_affiliate
+module.exports = entities.models.authorized_affiliates.count()
+.then(c => c > 0 ? Promise.resolve() :
+  entities.models.authorized_affiliates
   .destroy({ truncate: { cascade: false } })
-  .then(() => entities.authorized_affiliate.bulkCreate([
+  .then(() => entities.models.authorized_affiliates.bulkCreate([
       {
         firstname: 'Christian',
         lastname: 'Angelone',
@@ -56,4 +58,4 @@ module.exports = entities.authorized_affiliate
         plan:"A110",
         expires:"2019-07-01"
       }
-  ]))
+  ])))

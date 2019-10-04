@@ -1,7 +1,9 @@
 const entities = require('../../entities')
-module.exports = entities.zone
+module.exports = module.exports = entities.models.zones.count()
+.then(c => c > 0 ? Promise.resolve() :
+    entities.models.zones
     .destroy({ truncate: { cascade: false } })
-    .then(() => entities.zone.bulkCreate([
+    .then(() => entities.models.zones.bulkCreate([
         { name: "Agronomía" },
         { name: "Almagro" },
         { name: "Balvanera" },
@@ -50,4 +52,4 @@ module.exports = entities.zone
         { name: "Villa Urquiza" },
         { name: "Villa del Parque" },
         { name: "Vélez Sarsfield" }
-    ]))
+    ])))

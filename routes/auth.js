@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const config = require('../config')
 
-const entities = require('../data/entities')
+const entities = require('../data/entities').models
 const jwt = require('jsonwebtoken')
 const secret = 'TOPSECRETTOP'
 
@@ -10,7 +10,7 @@ const mailers = require('../mailers')
 
 router.post('/login', (req, res) => {
     const { idn, password, role } = req.body
-    entities[role].findOne({
+    entities[role + 's'].findOne({
         where: { idn },
         attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
     }).then(user => {
@@ -27,7 +27,7 @@ router.post('/register', (req, res) => {
     const { info, role } = req.body
     info.hashed_password = info.password
 
-    entities[role]
+    entities[role + 's']
         .findOne({ where: { idn: info.idn } })
         .then(user => {
             if (user) {
@@ -35,20 +35,20 @@ router.post('/register', (req, res) => {
                 return res.status(200).json({ message: 'Registro exitoso' })
             }
             if(role === 'affiliate') {
-                return entities.authorized_affiliate
+                return entities.authorized_affiliates
                     .findOne({ where: { idn: info.idn } })
                     .then(affiliate => {
                         if(!affiliate) throw new Error('Usted no es un afiliado autorizado')
                         if(info.plan !== affiliate.plan) throw new Error(`Usted no esta afiliado con el plan '${ info.plan }'`)
                         if(info.affiliate_id !== affiliate.affiliate_id) throw new Error(`Usted no esta afiliado con este numero de afiliado '${ info.affiliate_id }'`)
                         if(affiliate.expires < new Date()) throw new Error(`Usted tiene su afiliacion vencida`)
-                        entities[role]
+                        entities[role + 's']
                             .create(info)
                             .then(user => { mailers.sendWelcomeEmail({ user }, config.isTesting) })
                             .then(_ => res.status(200).json({ message: 'Registro exitoso' }))
                     })
             } else {
-                return entities[role]
+                return entities[role + 's']
                             .create(info)
                             .then(_ => res.status(200).json({ message: 'Registro exitoso' }))
             }

@@ -1,7 +1,9 @@
 const entities = require('../../entities')
-module.exports = entities.specialty
+module.exports = module.exports = entities.models.specialties.count()
+.then(c => c > 0 ? Promise.resolve() :
+   entities.models.specialties
    .destroy({ truncate: { cascade: false } })
-   .then(() => entities.specialty.bulkCreate([
+   .then(() => entities.models.specialties.bulkCreate([
       { name: "ADOLESCENCIA Y PUBERTAD" },
       { name: "ALERGIA E INMUNOLOGÍA" },
       { name: "ALERGIA E INMUNOLOGÍA INFANTIL" },
@@ -145,4 +147,4 @@ module.exports = entities.specialty
       { name: "UROGINECOLOGÍA" },
       { name: "UROLOGÍA" },
       { name: "UROLOGÍA INFANTIL" }
-   ]))
+   ])))

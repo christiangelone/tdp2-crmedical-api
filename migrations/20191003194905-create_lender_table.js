@@ -4,10 +4,10 @@ module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('lenders', {
       id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
+        primaryKey: true
       },
       type: {
         type: Sequelize.STRING,
@@ -27,6 +27,16 @@ module.exports = {
       },
       emails: {
         type: Sequelize.TEXT,
+        allowNull: false
+      },
+      created_at: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        allowNull: false
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
         allowNull: false
       }
     }),

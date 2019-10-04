@@ -4,10 +4,10 @@ module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('zones', {
       id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
+        primaryKey: true
       },
       name: {
         type: Sequelize.STRING,

@@ -1,19 +1,23 @@
-const { db, dataTypes } = require('../db')
-
-const Zone = db.define('zones', {
-  name: {
-    type: dataTypes.STRING,
-    allowNull: false
-  }
-}, {
-  underscored: true,
-  timestamps: false,
-  freezeTableName: true,
-  classMethods: {
-    associate: (entities) => { 
-      console.log("ASSOCIATIONS FOR ZONE LOADED!")
+module.exports = (db, dataTypes) => {
+  const Zone = db.define('zones', {
+    id: {
+      type: dataTypes.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    name: {
+      type: dataTypes.STRING,
+      allowNull: false
     }
-  }
-});
+  }, {
+    underscored: true,
+    timestamps: false,
+    freezeTableName: true
+  });
 
-module.exports = Zone
+  Zone.associate = (entities) => { 
+    console.log("ASSOCIATIONS FOR ZONE LOADED!")
+  }
+  return Zone;
+}
