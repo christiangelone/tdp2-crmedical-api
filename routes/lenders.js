@@ -42,7 +42,7 @@ router.get('/', (req, res) => {
                 model: entities.specialties,
                 as: 'specialties',
                 ...(secondaryFilters.where && secondaryFilters.where.specialty
-                        ? { where: { name: secondaryFilters.where.specialty}}
+                        ? { where: { id: secondaryFilters.where.specialty }}
                         : {}
                     ),
                 through: { attributes: [] },
@@ -58,7 +58,7 @@ router.get('/', (req, res) => {
                         model: entities.zones,
                         as: 'zone',
                         ...(secondaryFilters.where && secondaryFilters.where.zone
-                            ? { where: { name: secondaryFilters.where.zone }}
+                            ? { where: { id: secondaryFilters.where.zone }}
                             : {}
                         ),
                         attributes: ['name']
