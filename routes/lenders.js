@@ -74,8 +74,23 @@ router.get('/', (req, res) => {
         ],
         order: [['name', 'ASC']]
     })
-    .then(lenders => res.json(lenders.map(l =>
-        Object.assign(l, { emails: l.emails.split(','), languages: l.languages.split(',')})
+    .then(lenders => res.json(lenders.map(l => ({
+            id: l.id,
+            type: l.type,
+            name: l.name,
+            plan: l.plan,
+            emails: l.emails.split(','),
+            languages: l.languages.split(','),
+            specialties: l.specialties.map(s => s.name),
+            offices: l.offices.map(o => ({
+                id: o.id,
+                address: o.address,
+                phone: o.phone,
+                lat: o.lat,
+                lon: o.lon,
+                zone: o.zone.name
+            }))
+        })
     )))
     .catch(err => res.status(500).json({ error: `Hubo un error al obtener los prestadores > ${err.message}`}))
 })
