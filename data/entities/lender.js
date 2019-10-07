@@ -19,7 +19,11 @@ module.exports = (db, dataTypes) => {
         default: 'Español'
       },
       plan: {
-        type: dataTypes.STRING,
+        type: dataTypes.ENUM(
+          'A110',
+          'A210',
+          'A310'
+        ),
         allowNull: false
       },
       emails: {

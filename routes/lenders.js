@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const sequelize = require('sequelize')
 const entities = require('../data/entities').models
 
 const getFilters = (query, filters) => {
@@ -40,6 +40,11 @@ router.get('/', (req, res) => {
     const primaryFilters = getFilters(req.query,['type', 'plan', 'name'])
     const secondaryFilters = getFilters(req.query,['specialty', 'zone'])
     
+    if(primaryFilters.where && primaryFilters.where.plan)
+        primaryFilters.where.plan = {
+            [sequelize.Op.gte]: primaryFilters.where.plan
+        }
+
     return entities.lenders.findAll({
         ...primaryFilters,
         include: [
