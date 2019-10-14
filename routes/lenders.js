@@ -21,7 +21,7 @@ router.post('/', (req, res) => {
         plan
     })
         .then(lender => Promise.resolve(lender.id))
-        .then(lender_id => console.log(lender_id) || Promise.all([
+        .then(lender_id => Promise.all([
             Promise.resolve(lender_id),
             offices.map(o => entities.offices.create({
                 ...o,
@@ -34,6 +34,28 @@ router.post('/', (req, res) => {
         ]))
         .then(([lender_id]) => res.json({ id: lender_id }))
         .catch(err => res.status(500).json({ error: `Hubo un error al cargar el prestador > ${err.message}`}))
+})
+
+router.put('/:id', (req, res) => {
+    const id = req.params.id
+    const { type, name, languages, emails, plan, specialties, offices} = req.body
+    return entities.lenders.update({
+        ...(type ? { type } : {}),
+        ...(name ? { name } : {}),
+        ...(languages ? { languages: languages.join(',') } : {}),
+        ...(emails ? { emails: emails.join(',') } : {}),
+        ...(plan ? { plan } : {}),
+    }, { where: { id } })
+        .then(lender => Promise.resolve(lender.id))
+        .then(id => res.json({ id }))
+        .catch(err => res.status(500).json({ error: `Hubo un error al actualizar el prestador > ${err.message}`}))
+})
+
+router.delete('/:id', (req, res) => {
+    const id = req.params.id
+    entities.lenders.destroy({ where: { id }, force: true })
+    .then(() => res.json({ id }))
+    .catch(err => res.status(500).json({ error: `Hubo un error al borrar el prestador > ${err.message}`}))
 })
 
 router.get('/', (req, res) => {
@@ -57,7 +79,7 @@ router.get('/', (req, res) => {
                         : {}
                     ),
                 through: { attributes: [] },
-                attributes: ['name']
+                attributes: ['id', 'name']
             },
             {
                 required: true,
