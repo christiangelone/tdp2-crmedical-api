@@ -15,7 +15,7 @@ module.exports = (db, dataTypes) => {
         default: ''
     },
     lat: {
-        type: dataTypes.STRING,
+        type: dataTypes.FLOAT,
         allowNull: false
     },
     lon: {

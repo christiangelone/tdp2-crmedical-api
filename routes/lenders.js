@@ -12,7 +12,7 @@ const getFilters = (query, filters) => {
 }
 
 router.post('/', (req, res) => {
-    const { type, name, languages, emails, plan, specialties, offices} = req.body
+    const { type, name, languages, emails, plan, specialties, offices } = req.body
     return entities.lenders.create({
         type,
         name,
@@ -38,17 +38,34 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
     const id = req.params.id
-    const { type, name, languages, emails, plan, specialties, offices} = req.body
-    return entities.lenders.update({
-        ...(type ? { type } : {}),
-        ...(name ? { name } : {}),
-        ...(languages ? { languages: languages.join(',') } : {}),
-        ...(emails ? { emails: emails.join(',') } : {}),
-        ...(plan ? { plan } : {}),
-    }, { where: { id } })
-        .then(lender => Promise.resolve(lender.id))
-        .then(id => res.json({ id }))
-        .catch(err => res.status(500).json({ error: `Hubo un error al actualizar el prestador > ${err.message}`}))
+    const { type, name, languages, emails, plan, specialties, offices } = req.body
+    return Promise.all([
+        entities.offices.destroy({ where: { lender_id: id }, force: true }),
+        entities.lender_specialty.destroy({ where: { lender_id: id }, force: true })
+    ])
+    .then(() => entities.lenders.destroy({ where: { id }, force: true }))
+    .then(() => {
+        return entities.lenders.create({
+            type,
+            name,
+            languages: languages.join(','),
+            emails: emails.join(','),
+            plan
+        })
+            .then(lender => Promise.all([
+                Promise.resolve(lender),
+                offices.map(o => entities.offices.create({
+                    ...o,
+                    lender_id: lender.id
+                })),
+                specialties.map(s_id => entities.lender_specialty.create({
+                    specialty_id: s_id,
+                    lender_id: lender.id
+                }))
+            ]))
+            .then(([lender]) => res.json(lender))
+    })
+    .catch(err => res.status(500).json({ error: `Hubo un error al cargar el prestador > ${err.message}`}))
 })
 
 router.delete('/:id', (req, res) => {
