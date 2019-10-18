@@ -12,7 +12,7 @@ router.post('/login', (req, res) => {
     const { idn, password, role } = req.body
     entities[role + 's'].findOne({
         where: { idn },
-        attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+        attributes: { exclude: ['createdAt', 'updatedAt'] }
     }).then(user => {
         if (!user) return res.status(400).json({ error: "DNI y/o password incorrecto"})
         if (password !== user.hashed_password) return res.status(400).json({ error: "DNI y/o password incorrecto"})
