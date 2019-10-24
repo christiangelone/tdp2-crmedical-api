@@ -10,8 +10,9 @@ const notifDispatcher = require('./notif_dispatcher');
 const token = 'eyJM0JO6xGE:APA91bFzBmfDuRp2TAVRHV6nqhjCH7KuJ6fdv3FDZtpp_qrSPAov6boDI2vpm88EVVcTJDsk68kCJVkAr0tKPlPKXxWFipJ8UCNT9RtsK3YCFv7Uxv7VpnQnb2xYsqjYh-7qhFj99Iew'
 
 /* Envio una notificacion a un dispositivo con el titulo 'Obi-wan says' y el mensaje 'Hello there' */
-notifDispatcher.sendNotification(token, 'Obi-wan says' , 'Hello there', response => {
-    console.log({ response });
-}, error => {
-    console.log({ error });
-});
+notifDispatcher.sendNotification(token, 'Obi-wan says' , 'Hello there')
+ .then(response => console.log({response}))
+ .catch(err => console.error({err}));
+
+
+ 

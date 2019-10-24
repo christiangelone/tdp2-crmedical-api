@@ -9,7 +9,13 @@ module.exports = function (configEnv) {
             credential: fbAdmin.credential.cert(fbServiceAccount),
             storageBucket: "lustrous-bay-252022.appspot.com"
         });
+
+        // se configura el manejador de notificaciones push
         const notifDispatcher = require('./notif_dispatcher');
         notifDispatcher.configure(fbAdmin.messaging());
+
+        // se configura el manejador de buckets de firebase
+        //const bucketManager = require('./bucket_manager');
+        //bucketManager.configure(fbAdmin.storage().bucket());
     }
 }

@@ -13,16 +13,14 @@ function configure(messaging) {
  * @param {string} token Token que identifica al dispositivo
  * @param {string} title Titulo de la notificacion
  * @param {string} payload Contenido del mensaje
- * @param {function} succCallback Callback a ejecutar ante un exito. La respuesta del api tiene la siguiente estructura:
- *  "projects/lustrous-bay-252022/messages/0:1571880395219718%e7d51fb0f9fd7ecd"
- * @param {function} errCallback Callback a ejecutar ante un error
+ * @returns {any} Promise<Object> Promesa con Id de la notificacion enviada
  */
-function sendNotification(token, title, payload, succCallback, errCallback) {
+function sendNotification(token, title, payload) {
     const message = {
         data: { title, message: payload }, token
     };
 
-    state.messaging.send(message).then(succCallback).catch(errCallback);
+    return state.messaging.send(message);
 }
 
 module.exports = {
