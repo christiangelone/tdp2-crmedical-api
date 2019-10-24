@@ -41,7 +41,9 @@
     "sequelize": "^5.18.4",
     "sequelize-cli": "^5.5.1",
     "sequelize-test-helpers": "^1.1.2",
-    "sqlite3": "^4.1.0"
+    "sqlite3": "^4.1.0",
+    "firebase": "^7.2.0",
+    "firebase-admin": "^8.6.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
