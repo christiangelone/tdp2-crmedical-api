@@ -28,6 +28,14 @@ router.post('/reject/:id', (req, res) => {
     .catch(err => res.status(500).json({ error: `Hubo un error al rechazar la autorizacion > ${err.message}`}))
 })
 
+router.post('/need-information/:id', (req, res) => {
+    const id = req.params.id
+    return entities.authorizations
+    .update({ status: 'NECESITA MAS INFORMACION' }, { where: { id } })
+    .then(() => res.json({ id }))
+    .catch(err => res.status(500).json({ error: `Hubo un error al rechazar la autorizacion > ${err.message}`}))
+})
+
 router.get('/', (req, res) => {
     const { affiliate_id } = req.query
     const where = affiliate_id ? { where: { affiliate_id } } : {}
