@@ -33,7 +33,15 @@ router.post('/need-information/:id', (req, res) => {
     return entities.authorizations
     .update({ status: 'NECESITA MAS INFORMACION' }, { where: { id } })
     .then(() => res.json({ id }))
-    .catch(err => res.status(500).json({ error: `Hubo un error al rechazar la autorizacion > ${err.message}`}))
+    .catch(err => res.status(500).json({ error: `Hubo un error al pedir mas informacion la autorizacion > ${err.message}`}))
+})
+
+router.post('/pend/:id', (req, res) => {
+    const id = req.params.id
+    return entities.authorizations
+    .update({ status: 'PENDIENTE' }, { where: { id } })
+    .then(() => res.json({ id }))
+    .catch(err => res.status(500).json({ error: `Hubo un error al pendear la autorizacion > ${err.message}`}))
 })
 
 router.get('/', (req, res) => {
