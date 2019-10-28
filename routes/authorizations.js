@@ -60,6 +60,7 @@ router.get('/', (req, res) => {
                     'affiliate_id',
                     'firstname',
                     'lastname',
+                    'plan'
                 ]
             },
             {
@@ -87,6 +88,7 @@ router.get('/:id', (req, res) => {
                     'affiliate_id',
                     'firstname',
                     'lastname',
+                    'plan'
                 ]
             },
             {
