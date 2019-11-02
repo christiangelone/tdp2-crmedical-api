@@ -61,4 +61,4 @@ typings/
 .next
 
 # firebase security file
-api-key.json
+# api-key.json

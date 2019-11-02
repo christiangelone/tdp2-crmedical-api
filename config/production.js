@@ -3,6 +3,7 @@ module.exports = {
     DB_URI: process.env['DATABASE_URL'],
     DB_DIALECT: 'postgres',
     PORT: process.env['PORT'],
+    FIREBASE_PATH: './api-key.json',
     MIGRATIONS: {
         username: process.env['DB_USERNAME'],
         password: process.env['DB_PASSWORD'],

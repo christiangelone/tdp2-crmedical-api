@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "lustrous-bay-252022",
+  "private_key_id": "6b346d6c42055ec40578c13ca27bcb7099cefa68",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCvKLmJb9jwU4K2\noDYefMvf9QubjSNCwbpmeBhiFitzwOkZw1ouFT+liTd30jm4fo6hG6RI99T2J0VO\nQdkCNu3y+cpljwcQ67weBOmDRk1LhplADjL/npH7viFi0FUvLRpyumcJUFKjaPrU\nRe+cc0uVVAgCpFfMbc+IXGBEKZoIwXwgAtZCQAtEFqUOkdENJyeah0d06htCl1M4\ndrPqb/WD//YTnb5LCEl9n33cj+CIWYRKVNs+MZlRhPPCWyekEe1Euw7J6MsYLoJd\n8ebvlTb4KUhf9kFrhkxWj8Xf8XuSHXpQMcZxqaneTFTa21U0w3xQ6/Fh36Tyv8d4\nXRJyuBBbAgMBAAECggEAGhEppM+i4t0iv6f8ddwPq+Q4FoL8w44OKKVocjcnafdv\nGU5DyPDmQxiLyzFbirPhk7iyjHNphjqA620MQnKcmy4xFfJ2VD5+L/TThZ2m732i\np/A/sbVOYhRru9y87fjnOI9kucjyNhnE87tMC1Cd59AUzcPZwcrOeat5s3CCLm7R\nmsjClRlU60vyMvX8385GxBhVoMgWAugOl0dJyxVuDGVm0aTMuI/1r++i0XJXI+BD\n01+1d6klmkr+okE97J6RZv+7WH5FQx8JM3wpMTmTxT1+7uZV5TzoySgCqU0eZxtQ\nljwWAcqu7nDFUkQvJFgiNvDDMaXts+W5kGVrivi+XQKBgQDsVm6jiLljrMd11gga\nU0RrIkv5XwBXkIVZmsWiEMgdcu0ghmmZsTyRTkvNWcgVl6xS72jvjqXHHr+ofc7y\nAbIwtP9snkIJcKagMdm2wWmGwxNYugVvDZ5RvK5sL0Zx2UljlCI5C29zvLSrHlp4\n9Zac15DYHSQLwDmMSN7LRsDrVQKBgQC9u0yaDr30P77bL7I9juRe1W0wCZfHvOrk\nXAkn3wWX9xXJKm8knPZwqp9LUrZHW7Iu78x1Pb7XDkZaN9e09ApDnkHzzeUwaQN9\nS/RMXoQ9c7gif1qIH2x/3l7oU3jWgaZTLYV9qZ0kguI3uAuipAMuVpdUZydYdQeW\nDpDS4QLs7wKBgF2jSSbGDx3s4QJRENjNUPhZmFxvRYVsH0mHRvKVT5RLaqROXRyl\n2md/7Ayqm9niREZ/0MXJcOlZx3oMjqfYAC/IJsN0WJnA5mPmHGqKazMXq1ymJ2z+\nqlGcPkdi27hT7P3lPUH4w+nJRJPf7NysAUaXKi5WLWfye1qXrJ5BpEIZAoGAEors\nmJ3aOLXGLFvD+rotXYtUSX6Wg+HVvw2zo17riAeQ7IEmLZjdiPNT8COcRusSRf4P\nqGGpdhEiFQ0iGsBDBIrB/VbhEFMjESrMLG6MVAksNMrniSgxDWopMmF+DNDM9ZIc\nWsSp4/iarUFiebm3yd6SmaAfO0jsveCcjM+K3qcCgYEAgdu+wVKVpyg1lkqXW8rR\n7T+/FNA9isEsCf1RhfaD/Qsa3t36Gn44oEZZ888cLXlK5Xk0jGepbdQdTBqFZ5Gd\nA+eODnCbRU6T0VL5PYDvuuIBHLbDkTRug3vJkgIgN6slovqUQgCo8D5ktEruT3Ai\ntKqYGaDLv7+cJbqEPYe5Tp8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-jws5b@lustrous-bay-252022.iam.gserviceaccount.com",
+  "client_id": "108943901307338457636",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-jws5b%40lustrous-bay-252022.iam.gserviceaccount.com"
+}
