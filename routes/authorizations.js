@@ -28,8 +28,8 @@ router.post('/authorize/:id', (req, res) => {
     .update({ status: 'AUTORIZADO' }, { returning: true, where: { id } })
     .then(([ _, [authorization] ]) =>
         sendNotificationToAffiliate(
-            `Autorizacion autorizada`,
-            `Su autorizacion ha sido autorizada`,
+            `Autorización autorizada`,
+            `Su autorización ha sido autorizada`,
             authorization.affiliate_id
         )
     )
