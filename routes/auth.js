@@ -9,7 +9,7 @@ const secret = 'TOPSECRETTOP'
 const mailers = require('../mailers')
 
 router.post('/login', (req, res) => {
-    const { idn, password, role } = req.body
+    const { idn, password, role, device_token } = req.body
     entities[role + 's'].findOne({
         where: { idn },
         attributes: { exclude: ['createdAt', 'updatedAt'] }
@@ -17,6 +17,7 @@ router.post('/login', (req, res) => {
         if (!user) return res.status(400).json({ error: "DNI y/o password incorrecto"})
         if (password !== user.hashed_password) return res.status(400).json({ error: "DNI y/o password incorrecto"})
         
+        if(device_token) user.update({ device_token })
         user.hashed_password = undefined
         const token = jwt.sign({ idn, role }, secret, )
         return res.json({ user, token })

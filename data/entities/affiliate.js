@@ -38,6 +38,9 @@ module.exports = (db, dataTypes) => {
     hashed_password: {
       type: dataTypes.STRING,
       allowNull: false
+    },
+    device_token: {
+      type: dataTypes.TEXT
     }
   }, {
     underscored: true,

@@ -9,6 +9,9 @@ const bodyParser = require('body-parser')
 const express = require('express');
 const api = express();
 
+const firebaseConfig = require('./firebase/firebase_config');
+firebaseConfig({ FIREBASE_PATH: "./api-key.json" })
+
 api.use(bodyParser.json())
 require('./routes')(api)
 
