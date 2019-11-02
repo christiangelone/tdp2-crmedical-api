@@ -26,14 +26,14 @@ router.post('/authorize/:id', (req, res) => {
     const id = req.params.id
     return entities.authorizations
     .update({ status: 'AUTORIZADO' }, { where: { id } })
-    .then(authorization => {
+    .then(authorization =>
         sendNotificationToAffiliate(
             `Autorizacion autorizada`,
             `Su autorizacion ha sido autorizada`,
             authorization.affiliate_id
         )
-        return res.json({ id })
-    })
+    )
+    .then(() => res.json({ id }))
     .catch(err => res.status(500).json({ error: `Hubo un error al autorizar la autorizacion > ${err.message}`}))
 })
 
@@ -41,14 +41,14 @@ router.post('/reject/:id', (req, res) => {
     const id = req.params.id
     return entities.authorizations
     .update({ status: 'RECHAZADO' }, { where: { id } })
-    .then(authorization => {
+    .then(authorization =>
         sendNotificationToAffiliate(
             `Autorización rechazada`,
             `Su autorización ha sido rechazada`,
             authorization.affiliate_id
         )
-        return res.json({ id })
-    })
+    )
+    .then(() => res.json({ id }))
     .catch(err => res.status(500).json({ error: `Hubo un error al rechazar la autorizacion > ${err.message}`}))
 })
 
@@ -56,14 +56,14 @@ router.post('/need-information/:id', (req, res) => {
     const id = req.params.id
     return entities.authorizations
     .update({ status: 'NECESITA MAS INFORMACION' }, { where: { id } })
-    .then(authorization => {
+    .then(authorization =>
         sendNotificationToAffiliate(
             `Autorización necesita más información`,
             `Su autorización necesita más información`,
             authorization.affiliate_id
         )
-        return res.json({ id })
-    })
+    )
+    .then(() => res.json({ id }))
     .catch(err => res.status(500).json({ error: `Hubo un error al pedir mas informacion la autorizacion > ${err.message}`}))
 })
 
