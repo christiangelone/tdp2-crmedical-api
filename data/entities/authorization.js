@@ -34,6 +34,14 @@ module.exports = (db, dataTypes) => {
           model: 'affiliates',
           key: 'id'
         }
+      },
+      authtype_id: {
+        type: dataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'authtypes',
+          key: 'id'
+        }
       }
     }, {
       underscored: true,
@@ -50,6 +58,10 @@ module.exports = (db, dataTypes) => {
         Authorization.belongsTo(
             entities.specialties,
             { foreignKey: 'specialty_id', as: 'specialty' }
+        )
+        Authorization.belongsTo(
+            entities.authtypes,
+            { foreignKey: 'authtype_id', as: 'authtype' }
         )
     }
   
