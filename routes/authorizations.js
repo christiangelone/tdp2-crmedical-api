@@ -23,7 +23,7 @@ function approveAutomatically(authorization){
     /* Por el momento unicamente se aprueban los estudios de tipo radiografia...
     Se debe refinar la logica de autorizaciones automaticas */
     const id = authorization.id;
-    if(authorization.authtype == radiographyId) {
+    if(authorization.authtype_id == radiographyId) {
         return entities.authorizations
             .update({ status: 'AUTORIZADO AUTOMATICAMENTE' }, { returning: true, where: { id } })
             .then(([ _, [au] ]) =>
@@ -35,10 +35,10 @@ function approveAutomatically(authorization){
 }
 
 router.post('/', (req, res) => {
-    const { url, path, specialty_id, affiliate_id, authorize, authtype } = req.body
+    const { url, path, specialty_id, affiliate_id, authorize, authtype_id } = req.body
     const status = authorize ? 'AUTORIZADO' : 'PENDIENTE'
     return entities.authorizations
-    .create({ url, path, specialty_id, affiliate_id, status , authtype })
+    .create({ url, path, specialty_id, affiliate_id, status , authtype_id })
     .then(au => approveAutomatically(au))
     .then(authorizations => res.json({ id: authorizations.id }))
     .catch(err => res.status(500).json({ error: `Hubo un error al cargar la autorizacion > ${err.message}`}))
