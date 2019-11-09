@@ -46,6 +46,7 @@ router.put('/:id', (req, res) => {
     .then(() => entities.lenders.destroy({ where: { id }, force: true }))
     .then(() => {
         return entities.lenders.create({
+            id,
             type,
             name,
             languages: languages.join(','),
