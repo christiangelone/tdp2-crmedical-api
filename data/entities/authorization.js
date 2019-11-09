@@ -19,6 +19,9 @@ module.exports = (db, dataTypes) => {
         allowNull: false,
         default: 'PENDING'
       },
+      observations: {
+        type: dataTypes.TEXT
+      },
       specialty_id: {
         type: dataTypes.INTEGER,
         allowNull: false,
