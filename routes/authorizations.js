@@ -39,8 +39,9 @@ router.post('/authorize/:id', (req, res) => {
 
 router.post('/reject/:id', (req, res) => {
     const id = req.params.id
+    const { observations } = req.body
     return entities.authorizations
-    .update({ status: 'RECHAZADO' }, { returning: true, where: { id } })
+    .update({ status: 'RECHAZADO', observations }, { returning: true, where: { id } })
     .then(([ _, [authorization] ]) =>
         sendNotificationToAffiliate(
             `Autorización rechazada`,
@@ -54,8 +55,9 @@ router.post('/reject/:id', (req, res) => {
 
 router.post('/need-information/:id', (req, res) => {
     const id = req.params.id
+    const { observations } = req.body
     return entities.authorizations
-    .update({ status: 'NECESITA MAS INFORMACION' }, { returning: true, where: { id } })
+    .update({ status: 'NECESITA MAS INFORMACION', observations }, { returning: true, where: { id } })
     .then(([ _, [authorization] ]) =>
         sendNotificationToAffiliate(
             `Autorización necesita más información`,
