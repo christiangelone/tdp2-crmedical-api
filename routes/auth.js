@@ -11,11 +11,13 @@ const mailers = require('../mailers')
 const boUsers = [
     {
         email: 'admin@myhealthapp.com',
-        password: 'admin'
+        password: 'admin',
+        role: 'admin'
     },
     {
         email: 'auditor@myhealthapp.com',
-        password: 'auditor'
+        password: 'auditor',
+        role: 'auditor'
     }
 ]
 
