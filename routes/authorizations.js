@@ -20,11 +20,11 @@ const radiographyId = 2;
  * @param {any} authorization Solicitud de autorizacion
  * @returns {Promise} Promesa con autorizacion
  */
-function approveAutomatically(authorization){
+function approveAutomatically(anAuthorization){
     /* Por el momento unicamente se aprueban los estudios de tipo radiografia...
     Se debe refinar la logica de autorizaciones automaticas */
-    const id = authorization.id;
-    if(authorization.authtype_id == radiographyId) {
+    const id = anAuthorization.id;
+    if(anAuthorization.authtype_id == radiographyId) {
         return entities.authorizations
             .update({ status: 'AUTORIZADO AUTOMATICAMENTE' }, { returning: true, where: { id } })
             .then(() => entities.authorizations.findOne({ where: { id }, include: [
@@ -37,9 +37,9 @@ function approveAutomatically(authorization){
                  del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
                  fue aprobada!.`,
                 authorization.affiliate_id
-            )).then(() => Promise.resolve(authorization));
+            )).then(() => Promise.resolve(anAuthorization));
     } else {
-        return Promise.resolve(authorization);
+        return Promise.resolve(anAuthorization);
     }
 }
 
