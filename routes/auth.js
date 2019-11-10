@@ -25,8 +25,9 @@ router.post('/bo/login', (req, res) => {
     const { email, password } = req.body
     const user = boUsers.findOne(u => u.email === email && u.password === password)
     if(user){
-        const token = jwt.sign({ email: user.email , role: user.role }, secret)
-        return res.json({ user, token })
+        const u = { email: user.email, role: user.role }
+        const token = jwt.sign({ email: u.email , role: u.role }, secret)
+        return res.json({ user: u , token })
     }
     else return res.status(400).json({ error: "email y/o password incorrecto"})
 })
