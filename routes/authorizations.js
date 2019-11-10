@@ -50,8 +50,8 @@ router.post('/authorize/:id', (req, res) => {
     return entities.authorizations
     .update({ status: 'AUTORIZADO', observations }, { returning: true, where: { id } })
     .then(() => entities.authorizations.findOne({ where: { id } , include: [
-        { model: 'specialties', as: 'specialty'},
-        { model: 'authtypes', as: 'authtype'},
+        { model: entities.specialties, as: 'specialty'},
+        { model: entities.authtypes, as: 'authtype'},
     ]}))
     .then(authorization => sendNotificationToAffiliate(
         `Solicitud de estudio aprobada`,
@@ -71,8 +71,8 @@ router.post('/reject/:id', (req, res) => {
     return entities.authorizations
     .update({ status: 'RECHAZADO', observations }, { returning: true, where: { id } })
     .then(() => entities.authorizations.findOne({ where: { id } , include: [
-        { model: 'specialties', as: 'specialty'},
-        { model: 'authtypes', as: 'authtype'},
+        { model: entities.specialties, as: 'specialty'},
+        { model: entities.authtypes, as: 'authtype'},
     ]}))
     .then(authorization => sendNotificationToAffiliate(
         `Solicitud de estudio rechazada`,
@@ -92,8 +92,8 @@ router.post('/need-information/:id', (req, res) => {
     return entities.authorizations
     .update({ status: 'NECESITA MAS INFORMACION', observations }, { returning: true, where: { id } })
     .then(() => entities.authorizations.findOne({ where: { id } , include: [
-        { model: 'specialties', as: 'specialty'},
-        { model: 'authtypes', as: 'authtype'},
+        { model: entities.specialties, as: 'specialty'},
+        { model: entities.authtypes, as: 'authtype'},
     ]}))
     .then(authorization => sendNotificationToAffiliate(
         `Solicitud de estudio con observaciones`,
