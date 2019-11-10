@@ -23,7 +23,7 @@ const boUsers = [
 
 router.post('/bo/login', (req, res) => {
     const { email, password } = req.body
-    const user = boUsers.findOne(u => u.email === email && u.password === password)
+    const user = boUsers.find(u => u.email === email && u.password === password)
     if(user){
         const u = { email: user.email, role: user.role }
         const token = jwt.sign({ email: u.email , role: u.role }, secret)
