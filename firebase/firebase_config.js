@@ -15,7 +15,7 @@ module.exports = function (configEnv) {
         notifDispatcher.configure(fbAdmin.messaging());
 
         // se configura el manejador de buckets de firebase
-        //const bucketManager = require('./bucket_manager');
-        //bucketManager.configure(fbAdmin.storage().bucket());
+        const bucketManager = require('./bucket_manager');
+        bucketManager.configure(fbAdmin.storage().bucket());
     }
 }

@@ -46,6 +46,7 @@ router.put('/:id', (req, res) => {
     .then(() => entities.lenders.destroy({ where: { id }, force: true }))
     .then(() => {
         return entities.lenders.create({
+            id,
             type,
             name,
             languages: languages.join(','),
@@ -63,7 +64,7 @@ router.put('/:id', (req, res) => {
                     lender_id: lender.id
                 }))
             ]))
-            .then(([lender]) => res.json(lender))
+            .then(([lender]) => res.json({ id: lender.id }))
     })
     .catch(err => res.status(500).json({ error: `Hubo un error al cargar el prestador > ${err.message}`}))
 })
