@@ -25,10 +25,10 @@ router.post('/bo/login', (req, res) => {
     const { email, password } = req.body
     const user = boUsers.findOne(u => u.email === email && u.password === password)
     if(user){
-        const token = jwt.sign({ idn, role }, secret, )
+        const token = jwt.sign({ email: user.email , role: user.role }, secret)
         return res.json({ user, token })
     }
-    else return res.status(400).json({ error: "DNI y/o password incorrecto"})
+    else return res.status(400).json({ error: "email y/o password incorrecto"})
 })
 
 router.post('/login', (req, res) => {
@@ -42,7 +42,7 @@ router.post('/login', (req, res) => {
         
         if(device_token) user.update({ device_token })
         user.hashed_password = undefined
-        const token = jwt.sign({ idn, role }, secret, )
+        const token = jwt.sign({ idn, role }, secret)
         return res.json({ user, token })
     })
 })
