@@ -4,7 +4,6 @@ module.exports = {
   up: (queryInterface, Sequelize) => Promise.all([
     queryInterface.addColumn('authorizations', 'authtype_id', {
       type: Sequelize.INTEGER,
-      defaultValue: 1,
       allowNull: false,
       references: {
         model: 'authtypes',
