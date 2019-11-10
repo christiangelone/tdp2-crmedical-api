@@ -49,13 +49,13 @@ router.post('/authorize/:id', (req, res) => {
     const { observations } = req.body
     return entities.authorizations
     .update({ status: 'AUTORIZADO', observations }, { returning: true, where: { id } })
-    .then(() => entities.authorizations.findOne({ where: { id } , include: [
+    .then(() => entities.authorizations.findOne({ where: { id }, include: [
         { model: entities.specialties, as: 'specialty'},
         { model: entities.authtypes, as: 'authtype'},
     ]}))
-    .then(authorization => sendNotificationToAffiliate(
+    .then(authorization => console.log(JSON.stringify(authorization, null, 2)) || sendNotificationToAffiliate(
         `Solicitud de estudio aprobada`,
-        `Su solicititud creada el ${authorization.created_at},
+        `Su solicitud creada el ${authorization.created_at},
          del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
          fue aprobada!.
         `,
@@ -70,13 +70,13 @@ router.post('/reject/:id', (req, res) => {
     const { observations } = req.body
     return entities.authorizations
     .update({ status: 'RECHAZADO', observations }, { returning: true, where: { id } })
-    .then(() => entities.authorizations.findOne({ where: { id } , include: [
+    .then(() => entities.authorizations.findOne({ where: { id }, include: [
         { model: entities.specialties, as: 'specialty'},
         { model: entities.authtypes, as: 'authtype'},
     ]}))
     .then(authorization => sendNotificationToAffiliate(
         `Solicitud de estudio rechazada`,
-        `Su solicititud creada el ${authorization.created_at},
+        `Su solicitud creada el ${authorization.created_at},
          del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
          fue rechazada.
         `,
@@ -91,13 +91,13 @@ router.post('/need-information/:id', (req, res) => {
     const { observations } = req.body
     return entities.authorizations
     .update({ status: 'NECESITA MAS INFORMACION', observations }, { returning: true, where: { id } })
-    .then(() => entities.authorizations.findOne({ where: { id } , include: [
+    .then(() => entities.authorizations.findOne({ where: { id }, include: [
         { model: entities.specialties, as: 'specialty'},
         { model: entities.authtypes, as: 'authtype'},
     ]}))
     .then(authorization => sendNotificationToAffiliate(
         `Solicitud de estudio con observaciones`,
-        `Su solicititud creada el ${authorization.created_at},
+        `Su solicitud creada el ${authorization.created_at},
          del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
          no puede ser aprobada, vea las observaciones del mismo.
         `,
