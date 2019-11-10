@@ -8,6 +8,27 @@ const secret = 'TOPSECRETTOP'
 
 const mailers = require('../mailers')
 
+const boUsers = [
+    {
+        email: 'admin@myhealthapp.com',
+        password: 'admin'
+    },
+    {
+        email: 'auditor@myhealthapp.com',
+        password: 'auditor'
+    }
+]
+
+router.post('/bo/login', (req, res) => {
+    const { email, password } = req.body
+    const user = boUsers.findOne(u => u.email === email && u.password === password)
+    if(user){
+        const token = jwt.sign({ idn, role }, secret, )
+        return res.json({ user, token })
+    }
+    else return res.status(400).json({ error: "DNI y/o password incorrecto"})
+})
+
 router.post('/login', (req, res) => {
     const { idn, password, role, device_token } = req.body
     entities[role + 's'].findOne({
