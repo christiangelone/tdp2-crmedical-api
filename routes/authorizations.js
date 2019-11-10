@@ -27,9 +27,17 @@ function approveAutomatically(authorization){
     if(authorization.authtype_id == radiographyId) {
         return entities.authorizations
             .update({ status: 'AUTORIZADO AUTOMATICAMENTE' }, { returning: true, where: { id } })
-            .then(([ _, [au] ]) =>
-                sendNotificationToAffiliate(`Autorización autorizada`,`Su autorización ha sido autorizada`, au.affiliate_id)
-            ).then(() => Promise.resolve(authorization));
+            .then(() => entities.authorizations.findOne({ where: { id }, include: [
+                { model: entities.specialties, as: 'specialty'},
+                { model: entities.authtypes, as: 'authtype'},
+            ]}))
+            .then(authorization => sendNotificationToAffiliate(
+                `Solicitud de estudio aprobada`,
+                `Su solicitud creada el ${ moment(authorization.createdAt).format('DD/MM/YYYY') },
+                 del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
+                 fue aprobada!.`,
+                authorization.affiliate_id
+            )).then(() => Promise.resolve(authorization));
     } else {
         return Promise.resolve(authorization);
     }
