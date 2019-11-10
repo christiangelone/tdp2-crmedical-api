@@ -49,13 +49,18 @@ router.post('/authorize/:id', (req, res) => {
     const { observations } = req.body
     return entities.authorizations
     .update({ status: 'AUTORIZADO', observations }, { returning: true, where: { id } })
-    .then(([ _, [authorization] ]) =>
-        sendNotificationToAffiliate(
-            `Autorización autorizada`,
-            `Su autorización ha sido autorizada`,
-            authorization.affiliate_id
-        )
-    )
+    .then(() => entities.authorizations.findOne({ where: { id } , include: [
+        { model: 'specialties', as: 'specialty'},
+        { model: 'authtypes', as: 'authtype'},
+    ]}))
+    .then(authorization => sendNotificationToAffiliate(
+        `Solicitud de estudio aprobada`,
+        `Su solicititud creada el ${authorization.created_at},
+         del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
+         fue aprobada!.
+        `,
+        authorization.affiliate_id
+    ))
     .then(() => res.json({ id }))
     .catch(err => res.status(500).json({ error: `Hubo un error al autorizar la autorizacion > ${err.message}`}))
 })
@@ -65,13 +70,18 @@ router.post('/reject/:id', (req, res) => {
     const { observations } = req.body
     return entities.authorizations
     .update({ status: 'RECHAZADO', observations }, { returning: true, where: { id } })
-    .then(([ _, [authorization] ]) =>
-        sendNotificationToAffiliate(
-            `Autorización rechazada`,
-            `Su autorización ha sido rechazada`,
-            authorization.affiliate_id
-        )
-    )
+    .then(() => entities.authorizations.findOne({ where: { id } , include: [
+        { model: 'specialties', as: 'specialty'},
+        { model: 'authtypes', as: 'authtype'},
+    ]}))
+    .then(authorization => sendNotificationToAffiliate(
+        `Solicitud de estudio rechazada`,
+        `Su solicititud creada el ${authorization.created_at},
+         del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
+         fue rechazada.
+        `,
+        authorization.affiliate_id
+    ))
     .then(() => res.json({ id }))
     .catch(err => res.status(500).json({ error: `Hubo un error al rechazar la autorizacion > ${err.message}`}))
 })
@@ -81,13 +91,18 @@ router.post('/need-information/:id', (req, res) => {
     const { observations } = req.body
     return entities.authorizations
     .update({ status: 'NECESITA MAS INFORMACION', observations }, { returning: true, where: { id } })
-    .then(([ _, [authorization] ]) =>
-        sendNotificationToAffiliate(
-            `Autorización necesita más información`,
-            `Su autorización necesita más información`,
-            authorization.affiliate_id
-        )
-    )
+    .then(() => entities.authorizations.findOne({ where: { id } , include: [
+        { model: 'specialties', as: 'specialty'},
+        { model: 'authtypes', as: 'authtype'},
+    ]}))
+    .then(authorization => sendNotificationToAffiliate(
+        `Solicitud de estudio con observaciones`,
+        `Su solicititud creada el ${authorization.created_at},
+         del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
+         no puede ser aprobada, vea las observaciones del mismo.
+        `,
+        authorization.affiliate_id
+    ))
     .then(() => res.json({ id }))
     .catch(err => res.status(500).json({ error: `Hubo un error al pedir mas informacion la autorizacion > ${err.message}`}))
 })
