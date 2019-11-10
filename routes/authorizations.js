@@ -53,12 +53,11 @@ router.post('/authorize/:id', (req, res) => {
         { model: entities.specialties, as: 'specialty'},
         { model: entities.authtypes, as: 'authtype'},
     ]}))
-    .then(authorization => console.log(JSON.stringify(authorization, null, 2)) || sendNotificationToAffiliate(
+    .then(authorization => sendNotificationToAffiliate(
         `Solicitud de estudio aprobada`,
-        `Su solicitud creada el ${authorization.created_at},
+        `Su solicitud creada el ${authorization.createdAt},
          del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
-         fue aprobada!.
-        `,
+         fue aprobada!.`,
         authorization.affiliate_id
     ))
     .then(() => res.json({ id }))
@@ -76,10 +75,9 @@ router.post('/reject/:id', (req, res) => {
     ]}))
     .then(authorization => sendNotificationToAffiliate(
         `Solicitud de estudio rechazada`,
-        `Su solicitud creada el ${authorization.created_at},
+        `Su solicitud creada el ${authorization.createdAt},
          del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
-         fue rechazada.
-        `,
+         fue rechazada.`,
         authorization.affiliate_id
     ))
     .then(() => res.json({ id }))
@@ -97,10 +95,9 @@ router.post('/need-information/:id', (req, res) => {
     ]}))
     .then(authorization => sendNotificationToAffiliate(
         `Solicitud de estudio con observaciones`,
-        `Su solicitud creada el ${authorization.created_at},
+        `Su solicitud creada el ${authorization.createdAt},
          del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
-         no puede ser aprobada, vea las observaciones del mismo.
-        `,
+         no puede ser aprobada, vea las observaciones del mismo.`,
         authorization.affiliate_id
     ))
     .then(() => res.json({ id }))
