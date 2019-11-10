@@ -13,11 +13,33 @@ const sendNotificationToAffiliate = (title, msg, affiliate_id) => {
     ))
 }
 
+const radiographyId = 2;
+/**
+ * Intenta autorizar automaticamente una Solicitud de estudio
+ * @param {any} authorization Solicitud de autorizacion
+ * @returns {Promise} Promesa con autorizacion
+ */
+function approveAutomatically(authorization){
+    /* Por el momento unicamente se aprueban los estudios de tipo radiografia...
+    Se debe refinar la logica de autorizaciones automaticas */
+    const id = authorization.id;
+    if(authorization.authtype_id == radiographyId) {
+        return entities.authorizations
+            .update({ status: 'AUTORIZADO AUTOMATICAMENTE' }, { returning: true, where: { id } })
+            .then(([ _, [au] ]) =>
+                sendNotificationToAffiliate(`Autorización autorizada`,`Su autorización ha sido autorizada`, au.affiliate_id)
+            ).then(() => Promise.resolve(authorization));
+    } else {
+        return Promise.resolve(authorization);
+    }
+}
+
 router.post('/', (req, res) => {
-    const { url, path, specialty_id, affiliate_id, authorize } = req.body
+    const { url, path, specialty_id, affiliate_id, authorize, authtype_id } = req.body
     const status = authorize ? 'AUTORIZADO' : 'PENDIENTE'
     return entities.authorizations
-    .create({ url, path, specialty_id, affiliate_id, status })
+    .create({ url, path, specialty_id, affiliate_id, status , authtype_id })
+    .then(au => approveAutomatically(au))
     .then(authorizations => res.json({ id: authorizations.id }))
     .catch(err => res.status(500).json({ error: `Hubo un error al cargar la autorizacion > ${err.message}`}))
 })
@@ -102,6 +124,11 @@ router.get('/', (req, res) => {
                 model: entities.specialties,
                 as: 'specialty',
                 attributes: ['name']
+            },
+            {
+                model: entities.authtypes,
+                as: 'authtype',
+                attributes: ['name']
             }
         ]
     })
@@ -129,6 +156,11 @@ router.get('/:id', (req, res) => {
             {
                 model: entities.specialties,
                 as: 'specialty',
+                attributes: ['name']
+            },
+            {
+                model: entities.authtypes,
+                as: 'authtype',
                 attributes: ['name']
             }
         ]
