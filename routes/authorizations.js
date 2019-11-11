@@ -66,7 +66,7 @@ router.post('/authorize/:id', (req, res) => {
         `Solicitud de estudio aprobada`,
         `Su solicitud creada el ${ moment(authorization.createdAt).format('DD/MM/YYYY') }
          del estudio para la especialidad ${authorization.specialty.name}
-         fue aprobada!.`,
+         fue aprobada!`,
         authorization.affiliate_id
     ))
     .then(() => res.json({ id }))
@@ -86,7 +86,7 @@ router.post('/reject/:id', (req, res) => {
         `Solicitud de estudio rechazada`,
         `Su solicitud creada el ${ moment(authorization.createdAt).format('DD/MM/YYYY') }
          del estudio para la especialidad ${authorization.specialty.name}
-         fue rechazada.`,
+         fue rechazada`,
         authorization.affiliate_id
     ))
     .then(() => res.json({ id }))
@@ -106,7 +106,7 @@ router.post('/need-information/:id', (req, res) => {
         `Solicitud de estudio con observaciones`,
         `Su solicitud creada el ${ moment(authorization.createdAt).format('DD/MM/YYYY') }
          del estudio para la especialidad ${authorization.specialty.name},
-         no puede ser aprobada, vea las observaciones del mismo.`,
+         no puede ser aprobada, vea las observaciones del mismo`,
         authorization.affiliate_id
     ))
     .then(() => res.json({ id }))
