@@ -105,7 +105,7 @@ router.post('/need-information/:id', (req, res) => {
     .then(authorization => sendNotificationToAffiliate(
         `Solicitud de estudio con observaciones`,
         `Su solicitud creada el ${ moment(authorization.createdAt).format('DD/MM/YYYY') }
-         del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
+         del estudio para la especialidad ${authorization.specialty.name},
          no puede ser aprobada, vea las observaciones del mismo.`,
         authorization.affiliate_id
     ))
