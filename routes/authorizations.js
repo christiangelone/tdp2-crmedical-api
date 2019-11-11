@@ -33,9 +33,9 @@ function approveAutomatically(anAuthorization){
             ]}))
             .then(authorization => sendNotificationToAffiliate(
                 `Solicitud de estudio aprobada`,
-                `Su solicitud creada el ${ moment(authorization.createdAt).format('DD/MM/YYYY') },
-                 del estudio ${authorization.authtype.name} para la especialidad ${authorization.specialty.name},
-                 fue aprobada!.`,
+                `Su solicitud creada el ${ moment(authorization.createdAt).format('DD/MM/YYYY') }
+                 del estudio para la especialidad ${authorization.specialty.name}
+                 fue aprobada!`,
                 authorization.affiliate_id
             )).then(() => Promise.resolve(anAuthorization));
     } else {
