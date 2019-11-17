@@ -15,13 +15,17 @@ function configure(bucket) {
  * @returns {Promise} Promesa de subida de archivo
  */
 function uploadFromFs(filePath, destination) {
-    const options = { destination };
+    const options = {
+        destination: destination, public: true, metadata: {
+            cacheControl: 'public, max-age=31536000',
+        }
+    };
     const bucket = state.bucket;
 
     return new Promise((resolve, reject) => {
         bucket.upload(filePath, options, function (err, file) {
             if (err) { reject(err); }
-            else { resolve(file); }
+            else { resolve(parseMetadata(file.metadata)); }
         });
     })
 }
@@ -38,12 +42,26 @@ function uploadFromStream(stream, destination, metadata = {}) {
     const file = bucket.file(destination);
 
     return new Promise((resolve, reject) => {
-        stream.pipe(file.createWriteStream({ metadata }))
+        stream.pipe(file.createWriteStream({ public: true, metadata }))
             .on('error', reject)
-            .on('finish', resolve);
+            .on('finish', () => file.getMetadata().then(metaa => resolve(parseMetadata(metaa[0]))));
     });
 }
 
-module.exports = { configure, uploadFromFs, uploadFromStream }
+/**
+ * Parsea la metadata de un archivo en firebase para quedarse con la informacion importante
+ */
+function parseMetadata(metadata) {
+    const { id, name, mediaLink, contentType } = metadata
+    return { id, path: name, url: mediaLink, contentType }
+}
+
+function getFile(srcFile) {
+    const bucket = state.bucket;
+    const file = bucket.file(srcFile);
+    return file;
+}
+
+module.exports = { configure, uploadFromFs, uploadFromStream, getFile }
 
 //{ metadata: { contentType: 'image/jpeg' } }
