@@ -54,4 +54,32 @@ router.get('/auth/rejected', (_, res) => {
     runQuery(query, res);
 })
 
+router.get('/auth/pending', (_, res) => {
+    const query = `
+    select sub.okdate, count(sub.okdate) 
+      from (select id,date_trunc('day',updated_at) as okdate 
+        from authorizations 
+        where status='PENDIENTE' 
+        and updated_at > now() - interval '30 days') 
+      as sub 
+      group by sub.okdate 
+      order by sub.okdate asc;
+    `
+
+    runQuery(query, res);
+})
+
+
+router.get('/auth/summary', (_,res) => {
+    const query = `
+    select count(distinct id) , status from authorizations 
+        where status='AUTORIZADO' or status='AUTORIZADO AUTOMATICAMENTE' 
+        and updated_at > now() - interval '30 days'
+        group by status
+    `
+
+    runQuery(query, res);
+})
+
+
 module.exports = router
