@@ -18,7 +18,7 @@ const stampWatermark = (bufferImg, bufferWatermarkImg) => {
 
 const getImgBufferFromUrl = url => {
     return new Promise((res, rej) => {
-        request.get({ url, encoding: null }, (err, res, buffer) => {
+        request.get({ url, encoding: null }, (err, _, buffer) => {
             if(err) rej(err)
             else res(buffer)
         });
