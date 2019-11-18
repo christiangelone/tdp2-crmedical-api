@@ -14,7 +14,12 @@ const stampWatermark = (bufferImg, bufferWatermarkImg) => {
                 [Jimp.BLEND_DESTINATION_OVER, 0.2, 0.2]
             );
         }))
-        .then(img => streamifier.createReadStream(img.quality(100)))
+        .then(img => new Promise((res, rej) => {
+           img.quality(100).getBuffer(Jimp.MIME_PNG, (err, buffer) => {
+               if(err) rej(err)
+               else res(streamifier.createReadStream(buffer))
+           })
+        }))
 }
 
 const getImgBufferFromUrl = url => {
