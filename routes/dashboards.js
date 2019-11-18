@@ -73,9 +73,8 @@ router.get('/auth/pending', (_, res) => {
 router.get('/auth/summary', (_,res) => {
     const query = `
     select count(distinct id) , status from authorizations 
-        where status='AUTORIZADO' or status='AUTORIZADO AUTOMATICAMENTE' 
-        and updated_at > now() - interval '30 days'
-        group by status
+        where updated_at > now() - interval '30 days'
+        group by status;
     `
 
     runQuery(query, res);
