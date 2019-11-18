@@ -48,6 +48,7 @@
     "sequelize-cli": "^5.5.1",
     "sequelize-test-helpers": "^1.1.2",
     "sqlite3": "^4.1.0",
+    "streamifier": "^0.1.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {

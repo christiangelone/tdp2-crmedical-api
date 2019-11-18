@@ -1,5 +1,6 @@
 const request = require('request')
 const Jimp = require('jimp');
+const streamifier = require('streamifier')
 
 const stampWatermark = (bufferImg, bufferWatermarkImg) => {
     return Jimp
@@ -13,7 +14,7 @@ const stampWatermark = (bufferImg, bufferWatermarkImg) => {
                 [Jimp.BLEND_DESTINATION_OVER, 0.2, 0.2]
             );
         }))
-        .then(img => img.quality(100))
+        .then(img => streamifier.createReadStream(img.quality(100)))
 }
 
 const getImgBufferFromUrl = url => {

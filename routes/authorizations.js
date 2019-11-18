@@ -84,7 +84,7 @@ router.post('/authorize/:id', (req, res) => {
     ]))
     .then(([authorization, imageWithStamp]) => Promise.all([
         Promise.resolve(authorization),
-        firebaseBucket.uploadFromStream(imageWithStamp, `myhealthapp/checks/authorized/${uuidv1()}.png`)
+        firebaseBucket.uploadFromStream(imageWithStamp, `myhealthapp/checks/authorized/${uuidv1()}.png`, { contentType: 'image/png', cacheControl: 'public, max-age=31536000'})
     ]))
     .then(([authorization, { url }]) => Promise.all([
         Promise.resolve(authorization),
@@ -118,7 +118,7 @@ router.post('/reject/:id', (req, res) => {
     ]))
     .then(([authorization, imageWithStamp]) => Promise.all([
         Promise.resolve(authorization),
-        firebaseBucket.uploadFromStream(imageWithStamp, `myhealthapp/checks/rejected/${uuidv1()}.png`)
+        firebaseBucket.uploadFromStream(imageWithStamp, `myhealthapp/checks/rejected/${uuidv1()}.png`, { contentType: 'image/png', cacheControl: 'public, max-age=31536000'})
     ]))
     .then(([authorization, { url }]) => Promise.all([
         Promise.resolve(authorization),
