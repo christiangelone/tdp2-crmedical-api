@@ -43,10 +43,12 @@
     "nyc": "^14.1.1",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
+    "request": "^2.88.0",
     "sequelize": "^5.18.4",
     "sequelize-cli": "^5.5.1",
     "sequelize-test-helpers": "^1.1.2",
-    "sqlite3": "^4.1.0"
+    "sqlite3": "^4.1.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

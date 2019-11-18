@@ -1,4 +1,5 @@
-var Jimp = require('jimp');
+const request = require('request')
+const Jimp = require('jimp');
 
 const stampWatermark = (bufferImg, bufferWatermarkImg) => {
     return Jimp
@@ -15,5 +16,16 @@ const stampWatermark = (bufferImg, bufferWatermarkImg) => {
         .then(img => img.quality(100))
 }
 
-// stampWatermark('receta.jpg', 'autorizado.png')
-//     .then(img => img.write('result.png'))
+const getImgBufferFromUrl = url => {
+    return new Promise((res, rej) => {
+        request.get({ url, encoding: null }, (err, res, buffer) => {
+            if(err) rej(err)
+            else res(buffer)
+        });
+    })
+}
+
+module.exports = {
+    stampWatermark,
+    getImgBufferFromUrl
+}

@@ -1,5 +1,5 @@
 const entities = require('../../entities')
-module.exports = module.exports = entities.models.authtypes.count()
+module.exports = entities.models.authtypes.count()
     .then(c => c > 0 ? Promise.resolve() :
         entities.models.authtypes
             .destroy({ truncate: { cascade: false } })

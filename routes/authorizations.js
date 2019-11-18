@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const moment = require('moment')
+const imageHelper = require('../helpers/image')
+const uuidv1 = require('uuid/v1')
 
 const entities = require('../data/entities').models
 const firebaseDispatcher = require('../firebase/notif_dispatcher')
+
+const firebaseBucket = require('../firebase/bucket_manager')
 
 const sendNotificationToAffiliate = (title, msg, affiliate_id) => {
     return entities.affiliates.findOne({ where: { id: affiliate_id }})
@@ -43,6 +47,16 @@ function approveAutomatically(anAuthorization){
     }
 }
 
+function stampImage(imageUrl, stampUrl) {
+    return Promise.all([
+        imageHelper.getImgBufferFromUrl(imageUrl),
+        imageHelper.getImgBufferFromUrl(stampUrl)
+    ])
+    .then(([imageBuffer, stampBuffer]) => 
+        imageHelper.stampWatermark(imageBuffer, stampBuffer)
+    )
+}
+
 router.post('/', (req, res) => {
     const { url, path, specialty_id, affiliate_id, authorize, authtype_id } = req.body
     const status = authorize ? 'AUTORIZADO' : 'PENDIENTE'
@@ -58,11 +72,25 @@ router.post('/authorize/:id', (req, res) => {
     const { observations } = req.body
     return entities.authorizations
     .update({ status: 'AUTORIZADO', observations }, { returning: true, where: { id } })
-    .then(() => entities.authorizations.findOne({ where: { id }, include: [
-        { model: entities.specialties, as: 'specialty'},
-        { model: entities.authtypes, as: 'authtype'},
-    ]}))
-    .then(authorization => sendNotificationToAffiliate(
+    .then(() => Promise.all([
+        entities.authorizations.findOne({ where: { id }, include: [
+            { model: entities.specialties, as: 'specialty'}
+        ]}),
+        entities.stamps.findOne({ where: { name: 'AUTORIZADO' }})
+    ]))
+    .then(([authorization, stamp]) => Promise.all([
+        Promise.resolve(authorization),
+        stampImage(authorization.url, stamp.url)
+    ]))
+    .then(([authorization, imageWithStamp]) => Promise.all([
+        Promise.resolve(authorization),
+        firebaseBucket.uploadFromStream(imageWithStamp, `myhealthapp/checks/authorized/${uuidv1()}.png`)
+    ]))
+    .then(([authorization, { url }]) => Promise.all([
+        Promise.resolve(authorization),
+        authorization.update({ url })
+    ]))
+    .then(([authorization]) => sendNotificationToAffiliate(
         `Solicitud de estudio aprobada`,
         `Su solicitud creada el ${ moment(authorization.createdAt).format('DD/MM/YYYY') }
          del estudio para la especialidad ${authorization.specialty.name}
@@ -78,11 +106,25 @@ router.post('/reject/:id', (req, res) => {
     const { observations } = req.body
     return entities.authorizations
     .update({ status: 'RECHAZADO', observations }, { returning: true, where: { id } })
-    .then(() => entities.authorizations.findOne({ where: { id }, include: [
-        { model: entities.specialties, as: 'specialty'},
-        { model: entities.authtypes, as: 'authtype'},
-    ]}))
-    .then(authorization => sendNotificationToAffiliate(
+    .then(() => Promise.all([
+        entities.authorizations.findOne({ where: { id }, include: [
+            { model: entities.specialties, as: 'specialty'}
+        ]}),
+        entities.stamps.findOne({ where: { name: 'RECHAZADO' }})
+    ]))
+    .then(([authorization, stamp]) => Promise.all([
+        Promise.resolve(authorization),
+        stampImage(authorization.url, stamp.url)
+    ]))
+    .then(([authorization, imageWithStamp]) => Promise.all([
+        Promise.resolve(authorization),
+        firebaseBucket.uploadFromStream(imageWithStamp, `myhealthapp/checks/rejected/${uuidv1()}.png`)
+    ]))
+    .then(([authorization, { url }]) => Promise.all([
+        Promise.resolve(authorization),
+        authorization.update({ url })
+    ]))
+    .then(([authorization]) => sendNotificationToAffiliate(
         `Solicitud de estudio rechazada`,
         `Su solicitud creada el ${ moment(authorization.createdAt).format('DD/MM/YYYY') }
          del estudio para la especialidad ${authorization.specialty.name}
@@ -99,8 +141,7 @@ router.post('/need-information/:id', (req, res) => {
     return entities.authorizations
     .update({ status: 'NECESITA MAS INFORMACION', observations }, { returning: true, where: { id } })
     .then(() => entities.authorizations.findOne({ where: { id }, include: [
-        { model: entities.specialties, as: 'specialty'},
-        { model: entities.authtypes, as: 'authtype'},
+        { model: entities.specialties, as: 'specialty'}
     ]}))
     .then(authorization => sendNotificationToAffiliate(
         `Solicitud de estudio con observaciones`,

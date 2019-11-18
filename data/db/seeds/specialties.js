@@ -1,5 +1,5 @@
 const entities = require('../../entities')
-module.exports = module.exports = entities.models.specialties.count()
+module.exports = entities.models.specialties.count()
 .then(c => c > 0 ? Promise.resolve() :
    entities.models.specialties
    .destroy({ truncate: { cascade: false } })
