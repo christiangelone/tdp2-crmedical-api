@@ -86,9 +86,9 @@ router.post('/authorize/:id', (req, res) => {
         Promise.resolve(authorization),
         firebaseBucket.uploadFromStream(imageWithStamp, `myhealthapp/checks/authorized/${uuidv1()}.png`, { contentType: 'image/png', cacheControl: 'public, max-age=31536000'})
     ]))
-    .then(([authorization, { url }]) => Promise.all([
+    .then(([authorization, { url, path }]) => Promise.all([
         Promise.resolve(authorization),
-        authorization.update({ url })
+        authorization.update({ url, path })
     ]))
     .then(([authorization]) => sendNotificationToAffiliate(
         `Solicitud de estudio aprobada`,
@@ -120,9 +120,9 @@ router.post('/reject/:id', (req, res) => {
         Promise.resolve(authorization),
         firebaseBucket.uploadFromStream(imageWithStamp, `myhealthapp/checks/rejected/${uuidv1()}.png`, { contentType: 'image/png', cacheControl: 'public, max-age=31536000'})
     ]))
-    .then(([authorization, { url }]) => Promise.all([
+    .then(([authorization, { url, path }]) => Promise.all([
         Promise.resolve(authorization),
-        authorization.update({ url })
+        authorization.update({ url, path })
     ]))
     .then(([authorization]) => sendNotificationToAffiliate(
         `Solicitud de estudio rechazada`,
