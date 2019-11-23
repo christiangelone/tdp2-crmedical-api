@@ -9,8 +9,8 @@ const stampWatermark = (bufferImg, bufferWatermarkImg) => {
             watermark.opacity(0.75)
             return img.composite(
                 watermark,
-                1000,
-                1420,
+                0,
+                0,
                 [Jimp.BLEND_DESTINATION_OVER, 0.2, 0.2]
             );
         }))
