@@ -80,5 +80,25 @@ router.get('/auth/summary', (_,res) => {
     runQuery(query, res);
 })
 
+router.get('/affiliates/active', (_,res) => {
+  const query = `
+    select plan, count(distinct(id)) as count
+    from affiliates
+    group by plan;
+  `
+
+  runQuery(query, res);
+})
+
+router.get('/affiliates/all', (_,res) => {
+  const query = `
+    select plan, count(distinct(id)) as count
+    from authorized_affiliates
+    group by plan;
+  `
+
+  runQuery(query, res);
+})
+
 
 module.exports = router
