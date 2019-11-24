@@ -31,11 +31,25 @@ function approveAutomatically(anAuthorization){
     if(anAuthorization.authtype_id == radiographyId) {
         return entities.authorizations
             .update({ status: 'AUTORIZADO AUTOMATICAMENTE' }, { returning: true, where: { id } })
-            .then(() => entities.authorizations.findOne({ where: { id }, include: [
-                { model: entities.specialties, as: 'specialty'},
-                { model: entities.authtypes, as: 'authtype'},
-            ]}))
-            .then(authorization => sendNotificationToAffiliate(
+            .then(() => Promise.all([
+                entities.authorizations.findOne({ where: { id }, include: [
+                    { model: entities.specialties, as: 'specialty'}
+                ]}),
+                entities.stamps.findOne({ where: { name: 'AUTORIZADO' }})
+            ]))
+            .then(([authorization, stamp]) => Promise.all([
+                Promise.resolve(authorization),
+                stampImage(authorization.url, stamp.url)
+            ]))
+            .then(([authorization, imageWithStamp]) => Promise.all([
+                Promise.resolve(authorization),
+                firebaseBucket.uploadFromStream(imageWithStamp, `myhealthapp/checks/authorized/${uuidv1()}.png`, { contentType: 'image/png', cacheControl: 'public, max-age=31536000'})
+            ]))
+            .then(([authorization, { url, path }]) => Promise.all([
+                Promise.resolve(authorization),
+                authorization.update({ url, path })
+            ]))
+            .then(([authorization]) => sendNotificationToAffiliate(
                 `Solicitud de estudio aprobada`,
                 `Su solicitud creada el ${ moment(authorization.createdAt).format('DD/MM/YYYY') }
                  del estudio para la especialidad ${authorization.specialty.name}
@@ -233,6 +247,37 @@ router.get('/:id', (req, res) => {
                 error: `Hubo un error al obtener la autorizacion > La autorizacion no existe`
             })
         })
+})
+
+router.get('/stamps/:name', (req, res) => {
+    return entities.stamps.findOne({ where: { name: req.params.name }})
+        .then(stamp => {
+            if(stamp) res.json(stamp)
+            else res.status(404).json({
+                error: `Hubo un error al obtener el sello > el sello no existe`
+            })
+        })
+        .catch(err => res.status(500).json({ error: `Hubo un error al obtener el sello > ${err.message}`}))
+})
+
+router.post('/stamps/:name', (req, res) => {
+    if (!req.files || Object.keys(req.files).length === 0 || req.files.stamp) {
+        return res.status(400).json({ error: `Hubo un error al cargar el sello > No se adjunto la imagen`})
+    }
+    const stampFile = req.files.stamp;
+    return firebaseBucket.uploadFromStream(
+        imageHelper.createStream(stampFile.data),
+        `myhealthapp/checks/stamps/${uuidv1()}.png`,
+        { contentType: stampFile.mimetype, cacheControl: 'public, max-age=31536000'}
+    )
+    .then(({ url }) => entities.stamps.findOne({ where: { name: req.params.name }})
+        .then(stamp => stamp
+            ? stamp.update({ url }).then(() => ({ id: stamp.id }))
+            : entities.stamps.create({ name: req.params.name, url })
+        )
+    )
+    .then(stamp => res.status(201).json({ id: stamp.id }))
+    .catch(err => res.status(500).json({ error: `Hubo un error al cargar el sello > ${err.message}`}))
 })
 
 module.exports = router

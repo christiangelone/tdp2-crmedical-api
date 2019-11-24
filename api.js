@@ -3,6 +3,7 @@ const configEnv = config[process.env.NODE_ENV]
 console.log(`API running in ${configEnv['ENV']} environment.`)
 
 const cors = require('cors')
+const fileUpload = require('express-fileupload');
 
 const dbData = require('./data/db')
 dbData.init()
@@ -12,6 +13,7 @@ const express = require('express');
 const api = express();
 
 api.use(cors())
+api.use(fileUpload());
 api.use(bodyParser.json())
 require('./routes')(api)
 

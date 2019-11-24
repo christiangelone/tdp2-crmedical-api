@@ -22,6 +22,8 @@ const stampWatermark = (bufferImg, bufferWatermarkImg) => {
         }))
 }
 
+const createStream = imgBuffer => streamifier.createReadStream(imgBuffer)
+
 const getImgBufferFromUrl = url => {
     return new Promise((res, rej) => {
         request.get({ url, encoding: null }, (err, _, buffer) => {
@@ -33,5 +35,6 @@ const getImgBufferFromUrl = url => {
 
 module.exports = {
     stampWatermark,
-    getImgBufferFromUrl
+    getImgBufferFromUrl,
+    createStream
 }
