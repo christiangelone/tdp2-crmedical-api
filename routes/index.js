@@ -4,6 +4,7 @@ const zones = require('./zones')
 const lenders = require('./lenders')
 const authorizations = require('./authorizations')
 const authtypes = require('./authtypes')
+const dashboards = require('./dashboards')
 
 module.exports = api => {
 
@@ -14,5 +15,6 @@ module.exports = api => {
     api.use('/lenders', lenders)
     api.use('/authorizations', authorizations)
     api.use('/authtypes', authtypes)
+    api.use('/dashboards', dashboards)
     return api
 }
