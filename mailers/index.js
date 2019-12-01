@@ -4,7 +4,7 @@ const transport = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'myhealthapp2019@gmail.com',
-        pass: 'health1234'
+        pass: 'jGJkQMeuNwuQSgKkZEmPCA87'
     }
 });
 
