@@ -39,7 +39,7 @@
     "firebase-admin": "^8.6.0",
     "jimp": "^0.8.5",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "nodemailer": "^6.3.0",
     "nyc": "^14.1.1",
     "pg": "^7.12.1",
